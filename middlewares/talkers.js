@@ -9,9 +9,8 @@ const validadeToken = (req, res, next) => {
      return next();
 };
 
-const validadeTalkerNameAge = (req, res, next) => {
-    const { name, age } = req.body;
-    console.log('validadaNameAge-name', name);
+const validateTalkerName = (req, res, next) => {
+    const { name } = req.body;
 
     if (!name) {
         return res.status(400).json({ message: 'O campo "name" é obrigatório' });
@@ -19,6 +18,11 @@ const validadeTalkerNameAge = (req, res, next) => {
     if (name.length < 3) {
         return res.status(400).json({ message: 'O "name" deve ter pelo menos 3 caracteres' });
     }
+    return next();
+}; 
+
+const validateTalkerAge = (req, res, next) => {
+    const { age } = req.body;
     if (!age) {
         return res.status(400).json({ message: 'O campo "age" é obrigatório' }); 
     }
@@ -27,7 +31,7 @@ const validadeTalkerNameAge = (req, res, next) => {
     });
     }
     return next();
-}; 
+};
 
 const validadeTalkerTalk = (req, res, next) => {
     const { talk } = req.body;
@@ -37,7 +41,7 @@ const validadeTalkerTalk = (req, res, next) => {
     if (!talk.watchedAt) {
         return res.status(400).json({ message: 'O campo "watchedAt" é obrigatório' });
     }
-    if (!talk.rate) {
+    if (!talk.rate && talk.rate !== 0) {
         return res.status(400).json({ message: 'O campo "rate" é obrigatório' });
     }
     return next();
@@ -58,8 +62,9 @@ const validateTalkContent = (req, res, next) => {
 };
 
 module.exports = {
-    validadeTalkerNameAge,
+    validadeToken,
+    validateTalkerName,
+    validateTalkerAge,
     validadeTalkerTalk,
     validateTalkContent,
-    validadeToken,
 };

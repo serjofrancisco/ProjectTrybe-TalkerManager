@@ -13,9 +13,10 @@ const { getToken } = require('./helpers/getToken');
 const { emailValidator, passwordValidator } = require('./middlewares/login');
 const {
   validadeToken,
-  validadeTalkerNameAge,
-  validadeTalkerTalk,
-  validateTalkContent,
+    validateTalkerName,
+    validateTalkerAge,
+    validadeTalkerTalk,
+    validateTalkContent,
 } = require('./middlewares/talkers');
 
 app.get('/talker', async (req, res) => {
@@ -44,7 +45,8 @@ app.post('/login', emailValidator, passwordValidator, (req, res) => {
 });
 
 app.post('/talker', validadeToken,
-validadeTalkerNameAge,
+validateTalkerName,
+validateTalkerAge,
 validadeTalkerTalk,
 validateTalkContent,
  async (req, res) => {
@@ -64,6 +66,24 @@ validateTalkContent,
    return err;
  }
 });
+
+app.put('/talker/:id', validadeToken,
+validateTalkerName,
+validateTalkerAge,
+validadeTalkerTalk,
+validateTalkContent, async (req, res) => {
+  const { name, age, talk } = req.body;
+  const { id } = req.params;
+  try {
+    const talkers = await read();
+    const index = talkers.findIndex((el) => Number(el.id) === Number(id));
+    talkers[index] = { ...talkers[index], name, age, talk };
+    await write(talkers);
+    return res.status(200).json(talkers[index]);
+  } catch (err) {
+    return err;
+  }
+})
 
 // não remova esse endpoint, e para o avaliador funcionar
 app.get('/', (_request, response) => {

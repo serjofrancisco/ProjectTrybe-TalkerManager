@@ -7,7 +7,7 @@ const getToken = () => {
     }
     return token;
   };
-console.log(getToken());
+
   module.exports = {
     getToken,
   };
