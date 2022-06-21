@@ -7,7 +7,7 @@ app.use(bodyParser.json());
 const HTTP_OK_STATUS = 200;
 const PORT = '3000';
 
-const { randomUUID } = require('crypto');
+// const { randomUUID } = require('crypto');
 const { read } = require('./helpers/filesystem');
 const { emailValidator, passwordValidator } = require('./middlewares');
 
