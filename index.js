@@ -8,8 +8,8 @@ const HTTP_OK_STATUS = 200;
 const PORT = '3000';
 
 const { randomUUID } = require('crypto');
-const { read, write } = require('./helpers/filesystem');
-const { loginMiddleWare } = require('./middlewares');
+const { read } = require('./helpers/filesystem');
+const { emailValidator, passwordValidator } = require('./middlewares');
 
 app.get('/talker', async (req, res) => {
     try {
@@ -31,9 +31,9 @@ app.get('/talker/:id', async (req, res) => {
   return res.status(200).json(selectTalker);
 });
 
-app.post('/login', loginMiddleWare, (req, res) => {
+app.post('/login', emailValidator, passwordValidator, (req, res) => {
   const token = randomUUID().split('-').join('').substring(0, 16);
-  return res.status(200).json({token});
+  return res.status(200).json({ token });
 });
 
 // não remova esse endpoint, e para o avaliador funcionar
