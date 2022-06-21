@@ -28,6 +28,17 @@ app.get('/talker', async (req, res) => {
     }
 });
 
+app.get('/talker/search', validadeToken, async (req, res) => {
+  const { q } = req.query;
+  try {
+    const talkers = await read();
+    const search = talkers.filter((el) => el.name.toLowerCase().includes(q.toLowerCase())) || [];
+    res.status(200).json(search);
+  } catch (err) {
+    return err;
+  }
+});
+
 app.get('/talker/:id', async (req, res) => {
   const { id: talkerId } = req.params;
   const talkers = await read();
