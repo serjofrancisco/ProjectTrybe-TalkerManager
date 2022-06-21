@@ -2,19 +2,18 @@ const fs = require('fs/promises');
 
 async function read() {
   try {
-    const data = await fs.readFile('./talker.json', { encoding: 'utf8' });
-    return JSON.parse(data);
+    const data = await fs.readFile('./talker.json');
+    return JSON.parse(data.toString());
   } catch (err) {
-    console.log(err);
+    return err;
   }
 }
 
-async function write() {
+async function write(content) {
     try {
-      const content = 'Some content!';
-      await fs.writeFile('./talker.json', content);
+      await fs.writeFile('./talker.json', JSON.stringify(content));
     } catch (err) {
-      console.log(err);
+      return err;
     }
   }
 

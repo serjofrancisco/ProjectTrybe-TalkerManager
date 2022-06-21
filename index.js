@@ -8,8 +8,15 @@ const HTTP_OK_STATUS = 200;
 const PORT = '3000';
 
 // const { randomUUID } = require('crypto');
-const { read } = require('./helpers/filesystem');
-const { emailValidator, passwordValidator } = require('./middlewares');
+const { read, write } = require('./helpers/filesystem');
+const { getToken } = require('./helpers/getToken');
+const { emailValidator, passwordValidator } = require('./middlewares/login');
+const {
+  validadeToken,
+  validadeTalkerNameAge,
+  validadeTalkerTalk,
+  validateTalkContent,
+} = require('./middlewares/talkers');
 
 app.get('/talker', async (req, res) => {
     try {
@@ -32,8 +39,30 @@ app.get('/talker/:id', async (req, res) => {
 });
 
 app.post('/login', emailValidator, passwordValidator, (req, res) => {
-  const token = 'asdfrthuytoprtgt';
+  const token = getToken();
   return res.status(200).json({ token });
+});
+
+app.post('/talker', validadeToken,
+validadeTalkerNameAge,
+validadeTalkerTalk,
+validateTalkContent,
+ async (req, res) => {
+ const { name, age, talk } = req.body;
+ try {
+  const talkers = await read();
+  const newTalker = {
+    name,
+    age,
+    id: talkers.length + 1,
+    talk,
+  };
+  const newTalkers = [...talkers, newTalker];
+   await write(newTalkers);
+   return res.status(201).json(newTalker);
+ } catch (err) {
+   return err;
+ }
 });
 
 // não remova esse endpoint, e para o avaliador funcionar
