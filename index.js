@@ -32,7 +32,7 @@ app.get('/talker/:id', async (req, res) => {
 });
 
 app.post('/login', emailValidator, passwordValidator, (req, res) => {
-  const token = randomUUID().split('-').join('').substring(0, 16);
+  const token = 'asdfrthuytoprtgt';
   return res.status(200).json({ token });
 });
 

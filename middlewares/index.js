@@ -28,12 +28,12 @@ const emailValidator = (req, res, next) => {
 
 const passwordValidator = (req, res, next) => {
     const { password } = req.body;
-    const validPassword = password.length >= 6;
     if (!password) {
         return res.status(400).json({
             message: 'O campo "password" é obrigatório',
         });
     }
+    const validPassword = password.length >= 6;
     if (!validPassword) {
         return res.status(400).json({
             message: 'O "password" deve ter pelo menos 6 caracteres',
