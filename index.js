@@ -83,7 +83,19 @@ validateTalkContent, async (req, res) => {
   } catch (err) {
     return err;
   }
-})
+});
+
+app.delete('/talker/:id', validadeToken, async (req, res) => {
+  const { id } = req.params;
+  try {
+    const talkers = await read();
+    const newTalkers = talkers.filter((el) => Number(el.id) !== Number(id));
+    await write(newTalkers);
+    return res.status(204).end();
+  } catch (err) {
+    return err;
+  }
+});
 
 // não remova esse endpoint, e para o avaliador funcionar
 app.get('/', (_request, response) => {
